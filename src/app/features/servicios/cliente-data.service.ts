@@ -42,7 +42,7 @@ export class ClienteDataService {
   }
 
   downloadExcel() {
-  return this.http.get(`${this.apiUrl}/clientes/descargar/excel`, {
+  return this.http.get(`${this.apiUrl}/descargar/excel`, {
     responseType: 'blob'
   });
 }
