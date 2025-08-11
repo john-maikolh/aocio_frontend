@@ -33,4 +33,16 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+
+  descargarExcel() {
+  this.clienteService.downloadExcel().subscribe((archivo) => {
+    const url = window.URL.createObjectURL(archivo);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'clientes.xlsx';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  });
+}
+
 }

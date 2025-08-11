@@ -41,6 +41,13 @@ export class ClienteDataService {
     return this.http.get<Cliente[]>(this.apiUrl);
   }
 
+  downloadExcel() {
+  return this.http.get(`${this.apiUrl}/clientes/descargar/excel`, {
+    responseType: 'blob'
+  });
+}
+
+
   obtenerClientePorId(id: string): Observable<Cliente | null> {
     if (!isPlatformBrowser(this.platformId)) {
       return of(null); // en SSR devolvemos null o algún valor por defecto
