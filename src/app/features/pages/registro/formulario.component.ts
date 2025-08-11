@@ -28,11 +28,10 @@ interface Cliente {
 export class FormularioComponent {
   cliente: Cliente = {
     nombre: '',
-    apellido: '',
     identificacion: '',
     telefono: '',
     direccion: '',
-    correo: 'facturaciondepositocededi@hotmail.com',
+    correo: 'facturacioncalderon@hotmail.com',
     cantidad_cilindros: 0
   };
 
@@ -61,7 +60,6 @@ export class FormularioComponent {
         // Limpiar formulario
         this.cliente = {
           nombre: '',
-          apellido: '',
           identificacion: '',
           telefono: '',
           direccion: '',

@@ -7,7 +7,6 @@ import { isPlatformBrowser } from '@angular/common';
 export interface Cliente {
   id?: string;
   nombre: string;
-  apellido: string;
   identificacion: string;
   telefono: string;
   direccion: string;
