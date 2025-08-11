@@ -8,7 +8,6 @@ import { FormsModule, NgForm } from '@angular/forms';
 interface Cliente {
   id?: string;
   nombre: string;
-  apellido: string;
   identificacion: string;
   telefono: string;
   direccion: string;
@@ -82,11 +81,6 @@ export class FormularioComponent {
   formatearNombre() {
     this.cliente.nombre = this.cliente.nombre.toUpperCase();
   }
-
-  formatearApellido() {
-    this.cliente.apellido = this.cliente.apellido.toUpperCase();
-  }
-
   formatearDireccion() {
     this.cliente.direccion = this.cliente.direccion.toUpperCase();
   }
