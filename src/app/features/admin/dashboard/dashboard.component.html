@@ -20,7 +20,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-600 text-sm font-medium mb-2">Cilindros vendidos hoy</p>
-                            <p class="text-3xl font-bold text-gray-800">28</p>
+                            <p class="text-3xl font-bold text-gray-800">{{ cilindrosVendidosHoy }}</p>
                         </div>
                         <div class="bg-emerald bg-opacity-10 p-3 rounded-full">
                             <svg class="w-8 h-8 text-emerald" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,7 +39,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-600 text-sm font-medium mb-2">Personas registradas hoy</p>
-                            <p class="text-3xl font-bold text-gray-800">15</p>
+                            <p class="text-3xl font-bold text-gray-800">{{ personasRegistradasHoy }}</p>
                         </div>
                         <div class="bg-emerald bg-opacity-10 p-3 rounded-full">
                             <svg class="w-8 h-8 text-emerald" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <!-- Download Button -->
+            <!-- Download Button  -->
             <div class="flex justify-center">
                 <button (click)="descargarCSV()" class="bg-emerald hover:bg-emerald-dark text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-3">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,32 +85,35 @@
 
 
         <section class="mt-10">
-  <h2 class="text-xl font-semibold mb-4">Clientes Registrados</h2>
+            <h2 class="text-2xl font-semibold mb-6 text-gray-900">Clientes Registrados</h2>
 
-  <div *ngIf="cargando" class="text-gray-600">Cargando clientes...</div>
-  <div *ngIf="error" class="text-red-600">{{ error }}</div>
+            <div *ngIf="cargando" class="text-gray-600 italic">Cargando clientes...</div>
+            <div *ngIf="error" class="text-red-600 font-semibold">{{ error }}</div>
 
-  <table *ngIf="!cargando && !error" class="w-full border-collapse border border-gray-300">
-    <thead>
-      <tr class="bg-gray-100">
-        <th class="border border-gray-300 p-2">Nombre</th>
-        <th class="border border-gray-300 p-2">Identificación</th>
-        <th class="border border-gray-300 p-2">Teléfono</th>
-        <th class="border border-gray-300 p-2">Dirección</th>
-        <th class="border border-gray-300 p-2">Cilindros</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let cliente of clientes" class="hover:bg-gray-50">
-        <td class="border border-gray-300 p-2">{{ cliente.nombre }}</td>
-        <td class="border border-gray-300 p-2">{{ cliente.identificacion }}</td>
-        <td class="border border-gray-300 p-2">{{ cliente.telefono }}</td>
-        <td class="border border-gray-300 p-2">{{ cliente.direccion }}</td>
-        <td class="border border-gray-300 p-2 text-center">{{ cliente.cantidad_cilindros }}</td>
-      </tr>
-    </tbody>
-  </table>
-</section>
+            <div *ngIf="!cargando && !error" class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+                <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Identificación</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dirección</th>
+                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Cilindros</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr *ngFor="let cliente of clientes" class="hover:bg-gray-100 transition-colors duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ cliente.nombre }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ cliente.identificacion }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ cliente.telefono }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ cliente.direccion }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-900 font-semibold">{{ cliente.cantidad_cilindros }}</td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </section>
+
 
     </main>
 </body>

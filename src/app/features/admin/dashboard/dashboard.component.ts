@@ -4,7 +4,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ClienteDataService, Cliente } from '../../servicios/cliente-data.service';
 
-
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -18,6 +17,9 @@ export class DashboardComponent implements OnInit {
   cargando = true;
   error = '';
 
+  cilindrosVendidosHoy = 0;
+  personasRegistradasHoy = 0;
+
   constructor(private clienteService: ClienteDataService) {}
 
   ngOnInit() {
@@ -30,6 +32,16 @@ export class DashboardComponent implements OnInit {
         this.error = 'Error al cargar clientes';
         this.cargando = false;
         console.error(err);
+      }
+    });
+
+    this.clienteService.getResumenDia().subscribe({
+      next: (res) => {
+        this.cilindrosVendidosHoy = res.cilindrosVendidos;
+        this.personasRegistradasHoy = res.personasRegistradas;
+      },
+      error: (err) => {
+        console.error('Error al cargar resumen del día', err);
       }
     });
   }
@@ -52,6 +64,4 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-
-
 }

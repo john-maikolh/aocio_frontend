@@ -55,4 +55,10 @@ export class ClienteDataService {
     }
     return this.http.get<Cliente>(`${this.apiUrl}/${id}`);
   }
+
+  getResumenDia(): Observable<{ cilindrosVendidos: number; personasRegistradas: number }> {
+  return this.http.get<{ cilindrosVendidos: number; personasRegistradas: number }>(`${this.apiUrl}/resumen-dia`);
+}
+
+
 }
