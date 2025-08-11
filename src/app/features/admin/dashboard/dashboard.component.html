@@ -1,0 +1,118 @@
+<body class="bg-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-100 px-6 py-4">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-2xl font-bold text-gray-800">Panel Administrativo</h1>
+            <p class="text-gray-600 mt-1">Gestión de Cilindros de Gas</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-6 py-8">
+        <!-- Daily Summary Section -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6">Resumen del día</h2>
+            
+            <!-- Cards Container -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- Cylinders Sold Card -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm font-medium mb-2">Cilindros vendidos hoy</p>
+                            <p class="text-3xl font-bold text-gray-800">28</p>
+                        </div>
+                        <div class="bg-emerald bg-opacity-10 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-emerald" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center">
+                        <span class="text-emerald text-sm font-medium">↗ +12%</span>
+                        <span class="text-gray-500 text-sm ml-2">vs ayer</span>
+                    </div>
+                </div>
+
+                <!-- Registered People Card -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm font-medium mb-2">Personas registradas hoy</p>
+                            <p class="text-3xl font-bold text-gray-800">15</p>
+                        </div>
+                        <div class="bg-emerald bg-opacity-10 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-emerald" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center">
+                        <span class="text-emerald text-sm font-medium">↗ +8%</span>
+                        <span class="text-gray-500 text-sm ml-2">vs ayer</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Download Button -->
+            <div class="flex justify-center">
+                <button onclick="downloadExcel()" class="bg-emerald hover:bg-emerald-dark text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span>Descargar datos en Excel</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Additional Info Section -->
+        <section class="bg-gray-50 rounded-xl p-6 border border-gray-100">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div>
+                    <p class="text-2xl font-bold text-gray-800">156</p>
+                    <p class="text-gray-600 text-sm">Cilindros en stock</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-gray-800">89%</p>
+                    <p class="text-gray-600 text-sm">Satisfacción cliente</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-gray-800">342</p>
+                    <p class="text-gray-600 text-sm">Clientes registrados</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="mt-10">
+  <h2 class="text-xl font-semibold mb-4">Clientes Registrados</h2>
+
+  <div *ngIf="cargando" class="text-gray-600">Cargando clientes...</div>
+  <div *ngIf="error" class="text-red-600">{{ error }}</div>
+
+  <table *ngIf="!cargando && !error" class="w-full border-collapse border border-gray-300">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="border border-gray-300 p-2">Nombre</th>
+        <th class="border border-gray-300 p-2">Apellido</th>
+        <th class="border border-gray-300 p-2">Identificación</th>
+        <th class="border border-gray-300 p-2">Teléfono</th>
+        <th class="border border-gray-300 p-2">Dirección</th>
+        <th class="border border-gray-300 p-2">Cilindros</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cliente of clientes" class="hover:bg-gray-50">
+        <td class="border border-gray-300 p-2">{{ cliente.nombre }}</td>
+        <td class="border border-gray-300 p-2">{{ cliente.apellido }}</td>
+        <td class="border border-gray-300 p-2">{{ cliente.identificacion }}</td>
+        <td class="border border-gray-300 p-2">{{ cliente.telefono }}</td>
+        <td class="border border-gray-300 p-2">{{ cliente.direccion }}</td>
+        <td class="border border-gray-300 p-2 text-center">{{ cliente.cantidad_cilindros }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+    </main>
+</body>

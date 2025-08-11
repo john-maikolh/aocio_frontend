@@ -1,0 +1,182 @@
+<div class="floating-elements">
+    <div class="floating-circle"></div>
+    <div class="floating-circle"></div>
+    <div class="floating-circle"></div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div class="header-content">
+            <h1>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 32px; height: 32px;">
+                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 9H14V4H5V21H19V9Z"></path>
+                </svg>
+                Registro de Cliente
+            </h1>
+            <p>CEDEDI CALDERÓN</p>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <div *ngIf="clienteGuardado" class="success-message" id="successMessage">
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+            </svg>
+            Cliente registrado exitosamente
+        </div>
+
+        <form id="customerForm" #form="ngForm" (ngSubmit)="guardarCliente(form)">
+            <div class="form-grid">
+                <div class="form-group">
+                        <label for="firstName">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                            </svg>
+                            Nombre <span class="required">*</span>
+                        </label>
+                        <!--(input)="formatearNombre()"-->
+                        <input  type="text" 
+                                id="firstName" 
+                                name="nombre" 
+                                [(ngModel)]="cliente.nombre" 
+                                 
+                                required="" 
+                                placeholder="Ingrese su nombre" 
+                                style="text-transform: uppercase;" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                            </svg>
+                            Apellido<span class="required">*</span>
+                        </label>
+                        <!-- (input)="formatearApellido()"-->
+                        <input  type="text" 
+                                id="lastName" 
+                                name="apellido" 
+                                [(ngModel)]="cliente.apellido"
+                                 
+                                required="" 
+                                placeholder="Ingrese su apellido"
+                                style="text-transform: uppercase;" >
+                    </div>
+                </div>
+
+            <div class="form-group">
+                <label for="idNumber">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"></path>
+                    </svg>
+                    Cédula o RUC <span class="required">*</span>
+                </label>
+                <input  type="text" 
+                        id="idNumber" 
+                        name="idNumber" 
+                        [(ngModel)]="cliente.identificacion"
+                        #idNumberRef="ngModel"
+                        pattern="^[0-9]{10}$"
+                        maxlength="10"
+                        minlength="10" 
+                        required="" 
+                        placeholder="Ej: 1234567890 o 1234567890001">
+                <!-- Mostrar mensaje de error -->
+                <div *ngIf="idNumberRef.invalid && idNumberRef.touched" class="text-danger">
+                    <div *ngIf="idNumberRef.errors?.['required']">El campo es obligatorio.</div>
+                    <div *ngIf="idNumberRef.errors?.['pattern']">Debe contener exactamente 10 dígitos numéricos.</div>
+                    <div *ngIf="idNumberRef.errors?.['minlength'] || idNumberRef.errors?.['maxlength']">
+                        Debe tener 10 dígitos.
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                    </svg>
+                    Dirección <span class="required">*</span>
+                </label>
+                <!--(input)="formatearDireccion()"-->
+                <input  type="text" 
+                        id="address" 
+                        name="address"  
+                        [(ngModel)]="cliente.direccion"
+                        
+                        required="" 
+                        placeholder="Ingrese su dirección completa"
+                        style="text-transform: uppercase;"
+                        style="text-transform: uppercase;">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
+                    </svg>
+                    Teléfono <span class="required">*</span>
+                </label>
+                <input  type="tel" 
+                        id="phone" 
+                        name="phone" 
+                        [(ngModel)]="cliente.telefono" 
+                        #phoneRef="ngModel"
+                        required
+                        pattern="^0[0-9]{9}$"
+                        maxlength="10"
+                        minlength="10"
+                        placeholder="Ej: 0987654321">
+
+                <!-- Mensajes de error -->
+                <div *ngIf="phoneRef.invalid && phoneRef.touched" class="text-danger">
+                    <div *ngIf="phoneRef.errors?.['required']">El campo es obligatorio.</div>
+                    <div *ngIf="phoneRef.errors?.['pattern']">
+                        El teléfono debe tener 10 dígitos y comenzar con 0.
+                    </div>
+                    <div *ngIf="phoneRef.errors?.['minlength'] || phoneRef.errors?.['maxlength']">
+                        Debe tener exactamente 10 dígitos.
+                    </div>
+                </div>    
+            </div>
+
+            <div class="form-group">
+                <label for="email">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
+                    </svg>
+                    Correo Electrónico
+                    <span class="info-badge">Prellenado</span>
+                </label>
+                <input  type="email" 
+                        id="email" 
+                        name="email"
+                        [(ngModel)]="cliente.correo" 
+                        [readonly]="true"
+                        value="facturaciondepositocededi@hotmail.com"
+                        placeholder="facturaciondepositocededi@hotmail.com">
+            </div>
+
+            <div class="form-group">
+                <label for="cylinderQuantity">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+                    </svg>
+                    Cantidad de Cilindros <span class="required">*</span>
+                </label>
+                <input  type="number" 
+                        id="cylinderQuantity" 
+                        name="cylinderQuantity" 
+                        [(ngModel)]="cliente.cantidad_cilindros"  
+                        min="1" required="" placeholder="Ej: 5">
+            </div>
+
+            <button type="submit" class="btn-primary" [disabled]="form.invalid">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+                </svg>
+                Registrar Cliente
+            </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+<!-- Layout principal -->
+<div class="min-h-screen flex flex-col">
+
+    <!-- Header (opcional) -->
+    <header class="bg-[#00598c] h-6 md:h-8"></header>
+
+    <!-- Contenido principal centrado -->
+    <main class="flex-1 flex flex-col items-center justify-start px-6 py-10 z-10">
+
+        <!-- Logo + título + subtítulo -->
+        <div class="flex flex-col items-center text-center">
+            <div class="mx-auto w-100 h-10 md:w-[28rem] md:h-[28rem]">
+                <img src="./assets/img/logo.png" alt="logocededicalderon" class="object-contain" />
+                <h1 class="text-2xl md:text-3xl font-bold text-[#00598c] mb-3">CEDEDI Calderón</h1>
+                <p class="text-[#00b4d8] text-sm font-medium tracking-wide mb-4">Sistema de Registro de Ventas</p>
+                <br>
+                <div class="text-center text-2xl md:text-3xl text-[#00598c] font-normal mb-10 max-w-xl animate-[fadeInUp_1s_ease-out_0.3s_forwards]">
+            Presiona para registrarte
+                </div>
+            </div> 
+        </div>
+        <br>
+        <!-- Botón -->
+        <a  
+            routerLink="/formulario"
+            class="bg-white/10 border-2 border-[#00b4d8] rounded-2xl px-12 py-8 min-w-[280px] md:min-w-[320px] shadow-lg backdrop-blur flex flex-col items-center gap-4 animate-[floatButton_4s_ease-in-out_infinite,fadeInUp_1s_ease-out_0.6s_forwards] hover:translate-y-[-15px] transition-all" 
+        >
+            <svg class="w-12 h-12 md:w-14 md:h-14 mb-1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="cylinderGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#00598c" />
+                        <stop offset="50%" style="stop-color:#00b4d8" />
+                        <stop offset="100%" style="stop-color:#00598c" />
+                    </linearGradient>
+                </defs>
+                <rect x="25" y="20" width="50" height="60" rx="6" fill="url(#cylinderGradient)" />
+                <rect x="45" y="12" width="10" height="12" rx="2" fill="#00598c" />
+                <circle cx="50" cy="15" r="2" fill="#caf0f8" />
+                <ellipse cx="50" cy="82" rx="25" ry="3" fill="#00598c" opacity="0.4" />
+                <rect x="30" y="30" width="40" height="1.5" fill="#caf0f8" opacity="0.7" />
+                <rect x="30" y="40" width="40" height="1.5" fill="#caf0f8" opacity="0.7" />
+                <rect x="30" y="50" width="40" height="1.5" fill="#caf0f8" opacity="0.7" />
+            </svg>
+            <span class="text-[#00598c] text-lg font-semibold tracking-wide">REGISTRARSE</span>
+        </a>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#00598c] text-white py-4 text-center">
+        <p>© 2025 CEDEDI Calderón. Todos los derechos reservados.</p>
+    </footer>
+</div>
