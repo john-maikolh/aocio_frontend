@@ -65,7 +65,7 @@ export class FormularioComponent {
           identificacion: '',
           telefono: '',
           direccion: '',
-          correo: 'facturaciondepositocededi@hotmail.com',
+          correo: 'facturacioncalderon@hotmail.com',
           cantidad_cilindros: 0
         };
 
