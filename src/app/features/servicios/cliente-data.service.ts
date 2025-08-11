@@ -41,11 +41,12 @@ export class ClienteDataService {
     return this.http.get<Cliente[]>(this.apiUrl);
   }
 
-  downloadExcel() {
-  return this.http.get(`${this.apiUrl}/descargar/excel`, {
+  downloadCSV() {
+  return this.http.get(`${this.apiUrl}/descargar/csv`, {
     responseType: 'blob'
   });
 }
+
 
 
   obtenerClientePorId(id: string): Observable<Cliente | null> {

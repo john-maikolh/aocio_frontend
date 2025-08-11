@@ -34,15 +34,24 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  descargarExcel() {
-  this.clienteService.downloadExcel().subscribe((archivo) => {
-    const url = window.URL.createObjectURL(archivo);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'clientes.xlsx';
-    a.click();
-    window.URL.revokeObjectURL(url);
-  });
-}
+  descargarCSV() {
+    this.clienteService.downloadCSV().subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'clientes.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Error al descargar CSV:', err);
+        alert('Error al descargar el archivo CSV');
+      }
+    });
+  }
+
 
 }
