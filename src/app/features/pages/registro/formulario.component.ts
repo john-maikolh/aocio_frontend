@@ -5,30 +5,28 @@ import { RouterModule } from "@angular/router";
 import { ClienteDataService } from '../../servicios/cliente-data.service';
 import { FormsModule, NgForm } from '@angular/forms';
 
-
 interface Cliente {
-    id?: string;
-    nombre: string;
-    apellido: string;
-    identificacion: string;
-    telefono: string;
-    direccion: string;
-    correo: string,
-    fecha_ingreso?: string;
-    cantidad_cilindros: number;
+  id?: string;
+  nombre: string;
+  apellido: string;
+  identificacion: string;
+  telefono: string;
+  direccion: string;
+  correo: string;
+  fecha_ingreso?: string;
+  cantidad_cilindros: number;
 }
 
 @Component({
-    selector: 'app-formulario',
-    standalone: true,
-    imports: [CommonModule, RouterModule, FormsModule,HttpClientModule],
-    templateUrl: './formulario.component.html',
-    styleUrls: ['./formulario.component.css'],
-    encapsulation: ViewEncapsulation.None
+  selector: 'app-formulario',
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule, HttpClientModule],
+  templateUrl: './formulario.component.html',
+  styleUrls: ['./formulario.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
-
-export class FormularioComponent{
-    cliente: Cliente = {
+export class FormularioComponent {
+  cliente: Cliente = {
     nombre: '',
     apellido: '',
     identificacion: '',
@@ -44,33 +42,37 @@ export class FormularioComponent{
 
   guardarCliente(form: NgForm) {
     if (form.invalid) {
-    // Marca todos los campos como tocados para que aparezcan los mensajes de error
-    Object.values(form.controls).forEach((control: any) => {
-      control.markAsTouched();
-    });
-    return;
+      Object.values(form.controls).forEach((control: any) => {
+        control.markAsTouched();
+      });
+      return;
+    }
 
-  }
-    this.clienteDataService.registrarCliente(this.cliente).subscribe({
+    // Creamos una copia sin id ni fecha_ingreso
+    const clienteData = { ...this.cliente };
+    delete clienteData.id;
+    delete clienteData.fecha_ingreso;
+
+    this.clienteDataService.registrarCliente(clienteData).subscribe({
       next: (res) => {
         console.log('Cliente guardado:', res);
         this.clienteGuardado = true;
 
-        // Limpia el formulario
+        // Limpiar formulario
         this.cliente = {
-            nombre: '',
-            apellido: '',
-            identificacion: '',
-            telefono: '',
-            direccion: '',
-            correo: 'facturaciondepositocededi@hotmail.com',
-            cantidad_cilindros: 0
+          nombre: '',
+          apellido: '',
+          identificacion: '',
+          telefono: '',
+          direccion: '',
+          correo: 'facturaciondepositocededi@hotmail.com',
+          cantidad_cilindros: 0
         };
 
         setTimeout(() => {
-            this.clienteGuardado = false;
+          this.clienteGuardado = false;
         }, 3000);
-        },
+      },
       error: (err) => {
         console.error('Error al guardar cliente:', err);
         alert('Error al guardar el cliente');
@@ -78,7 +80,7 @@ export class FormularioComponent{
     });
   }
 
-    //Para poner en mayúsculas las letras del formulario
+  // Para poner en mayúsculas las letras del formulario
   formatearNombre() {
     this.cliente.nombre = this.cliente.nombre.toUpperCase();
   }
