@@ -48,17 +48,4 @@ export class ClienteDataService {
 }
 
 
-
-  obtenerClientePorId(id: string): Observable<Cliente | null> {
-    if (!isPlatformBrowser(this.platformId)) {
-      return of(null); // en SSR devolvemos null o algún valor por defecto
-    }
-    return this.http.get<Cliente>(`${this.apiUrl}/${id}`);
-  }
-
-  getResumenDia(): Observable<{ cilindrosVendidos: number; personasRegistradas: number }> {
-  return this.http.get<{ cilindrosVendidos: number; personasRegistradas: number }>(`${this.apiUrl}/resumen-dia`);
-}
-
-
 }

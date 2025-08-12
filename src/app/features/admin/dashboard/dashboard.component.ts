@@ -22,45 +22,41 @@ export class DashboardComponent implements OnInit {
   cargando = true;
   error = '';
 
+  // Estas variables ahora se calculan localmente en el front
   cilindrosVendidosHoy = 0;
   personasRegistradasHoy = 0;
 
   constructor(private clienteService: ClienteDataService) {}
 
   ngOnInit() {
-  this.clienteService.getClientes().subscribe({
-    next: (data) => {
-      this.clientes = data;
-      this.totalPaginas = Math.ceil(this.clientes.length / this.elementosPorPagina);
-      this.cambiarPagina(1); // Mostrar la primera página
-      this.cargando = false;
+    this.clienteService.getClientes().subscribe({
+      next: (data) => {
+        this.clientes = data;
+        this.totalPaginas = Math.ceil(this.clientes.length / this.elementosPorPagina);
+        this.cambiarPagina(1);
+        this.cargando = false;
 
-      // Obtener fecha actual en formato YYYY-MM-DD para comparación
-      const hoy = new Date().toISOString().split('T')[0];
+        const hoy = new Date().toISOString().split('T')[0];
 
-      // Sumar cantidad de cilindros vendidos (asegurando que cantidad_cilindros sea número)
-      this.cilindrosVendidosHoy = this.clientes.reduce((total, cliente) => {
-        const cantidad = typeof cliente.cantidad_cilindros === 'number' ? cliente.cantidad_cilindros : 0;
-        return total + cantidad;
-      }, 0);
+        // Calcular total cilindros vendidos (sumar cantidad_cilindros)
+        this.cilindrosVendidosHoy = this.clientes.reduce((total, cliente) => {
+          const cantidad = typeof cliente.cantidad_cilindros === 'number' ? cliente.cantidad_cilindros : 0;
+          return total + cantidad;
+        }, 0);
 
-      // Contar clientes con fecha_ingreso igual a hoy
-      this.personasRegistradasHoy = this.clientes.filter(cliente => {
-        if (!cliente.fecha_ingreso) return false;
-        // Solo comparamos la parte de fecha, sin tiempo
-        const fechaRegistro = cliente.fecha_ingreso.split('T')[0];
-        return fechaRegistro === hoy;
-      }).length;
-    },
-    error: (err) => {
-      this.error = 'Error al cargar clientes';
-      this.cargando = false;
-      console.error(err);
-    }
-  });
-}
-
-
+        // Contar clientes registrados hoy (comparar fecha_ingreso)
+        this.personasRegistradasHoy = this.clientes.filter(cliente => {
+          if (!cliente.fecha_ingreso) return false;
+          return cliente.fecha_ingreso.split('T')[0] === hoy;
+        }).length;
+      },
+      error: (err) => {
+        this.error = 'Error al cargar clientes';
+        this.cargando = false;
+        console.error(err);
+      }
+    });
+  }
 
   cambiarPagina(pagina: number) {
     if (pagina < 1 || pagina > this.totalPaginas) return;
