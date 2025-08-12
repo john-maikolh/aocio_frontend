@@ -35,17 +35,21 @@ export class DashboardComponent implements OnInit {
       this.cambiarPagina(1); // Mostrar la primera página
       this.cargando = false;
 
-      // 🔹 Calcular cilindros vendidos (sumatoria)
-      this.cilindrosVendidosHoy = this.clientes.reduce(
-        (total, cliente) => total + (cliente.cantidad_cilindros || 0),
-        0
-      );
-
-      // 🔹 Calcular personas registradas hoy (si existe fecha de registro)
+      // Obtener fecha actual en formato YYYY-MM-DD para comparación
       const hoy = new Date().toISOString().split('T')[0];
+
+      // Sumar cantidad de cilindros vendidos (asegurando que cantidad_cilindros sea número)
+      this.cilindrosVendidosHoy = this.clientes.reduce((total, cliente) => {
+        const cantidad = typeof cliente.cantidad_cilindros === 'number' ? cliente.cantidad_cilindros : 0;
+        return total + cantidad;
+      }, 0);
+
+      // Contar clientes con fecha_ingreso igual a hoy
       this.personasRegistradasHoy = this.clientes.filter(cliente => {
         if (!cliente.fecha_ingreso) return false;
-        return cliente.fecha_ingreso.split('T')[0] === hoy;
+        // Solo comparamos la parte de fecha, sin tiempo
+        const fechaRegistro = cliente.fecha_ingreso.split('T')[0];
+        return fechaRegistro === hoy;
       }).length;
     },
     error: (err) => {
@@ -55,6 +59,7 @@ export class DashboardComponent implements OnInit {
     }
   });
 }
+
 
 
   cambiarPagina(pagina: number) {
