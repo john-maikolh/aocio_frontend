@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <!-- Download Button  -->
+            <!-- Download Button  
             <div class="flex justify-center">
                 <button (click)="descargarCSV()" class="bg-emerald hover:bg-emerald-dark text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-3">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,33 +62,29 @@
                     </svg>
                     <span>Descargar datos en CSV</span>
                 </button>
-            </div>
+            </div>-->
         </section>
-
-        <!-- Additional Info Section -->
-        <section class="bg-gray-50 rounded-xl p-6 border border-gray-100">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div>
-                    <p class="text-2xl font-bold text-gray-800">156</p>
-                    <p class="text-gray-600 text-sm">Cilindros en stock</p>
-                </div>
-                <div>
-                    <p class="text-2xl font-bold text-gray-800">89%</p>
-                    <p class="text-gray-600 text-sm">Satisfacción cliente</p>
-                </div>
-                <div>
-                    <p class="text-2xl font-bold text-gray-800">342</p>
-                    <p class="text-gray-600 text-sm">Clientes registrados</p>
-                </div>
-            </div>
-        </section>
-
 
         <section class="mt-10">
             <h2 class="text-2xl font-semibold mb-6 text-gray-900">Clientes Registrados</h2>
 
-            <div *ngIf="cargando" class="text-gray-600 italic">Cargando clientes...</div>
-            <div *ngIf="error" class="text-red-600 font-semibold">{{ error }}</div>
+            <!-- Estado de carga -->
+            <div *ngIf="cargando" class="flex items-center gap-2 text-gray-600 italic bg-gray-100 px-4 py-2 rounded-lg shadow-sm">
+            <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"></path>
+            </svg>
+            <span>Cargando clientes...</span>
+            </div>
+
+            <!-- Mensaje de error -->
+            <div *ngIf="error" class="flex items-center gap-2 text-red-700 bg-red-100 border border-red-300 px-4 py-2 rounded-lg shadow-sm">
+            <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-width="2" d="M12 8v4m0 4h.01M12 2a10 10 0 110 20 10 10 0 010-20z" />
+            </svg>
+            <span class="font-semibold">{{ error }}</span>
+            </div>
+
 
             <div *ngIf="!cargando && !error" class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -102,7 +98,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <tr *ngFor="let cliente of clientes" class="hover:bg-gray-100 transition-colors duration-200">
+                    <tr *ngFor="let cliente of clientesPaginados" class="hover:bg-gray-100 transition-colors duration-200">
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ cliente.nombre }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ cliente.identificacion }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ cliente.telefono }}</td>
@@ -111,6 +107,26 @@
                     </tr>
                 </tbody>
                 </table>
+            </div>
+
+            <div class="flex justify-center items-center space-x-2 mt-4">
+                <button 
+                    (click)="cambiarPagina(paginaActual - 1)"
+                    [disabled]="paginaActual === 1"
+                    class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50">
+                    Anterior
+                </button>
+
+                <span class="text-gray-700 font-semibold">
+                    Página {{ paginaActual }} de {{ totalPaginas }}
+                </span>
+
+                <button 
+                    (click)="cambiarPagina(paginaActual + 1)"
+                    [disabled]="paginaActual === totalPaginas"
+                    class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50">
+                    Siguiente
+                </button>
             </div>
         </section>
 

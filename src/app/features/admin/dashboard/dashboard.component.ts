@@ -14,6 +14,11 @@ import { ClienteDataService, Cliente } from '../../servicios/cliente-data.servic
 })
 export class DashboardComponent implements OnInit {
   clientes: Cliente[] = [];
+  clientesPaginados: Cliente[] = [];
+  paginaActual = 1;
+  elementosPorPagina = 15;
+  totalPaginas = 0;
+
   cargando = true;
   error = '';
 
@@ -26,6 +31,8 @@ export class DashboardComponent implements OnInit {
     this.clienteService.getClientes().subscribe({
       next: (data) => {
         this.clientes = data;
+        this.totalPaginas = Math.ceil(this.clientes.length / this.elementosPorPagina);
+        this.cambiarPagina(1); // Mostrar la primera página
         this.cargando = false;
       },
       error: (err) => {
@@ -44,6 +51,14 @@ export class DashboardComponent implements OnInit {
         console.error('Error al cargar resumen del día', err);
       }
     });
+  }
+
+  cambiarPagina(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginas) return;
+    this.paginaActual = pagina;
+    const inicio = (pagina - 1) * this.elementosPorPagina;
+    const fin = inicio + this.elementosPorPagina;
+    this.clientesPaginados = this.clientes.slice(inicio, fin);
   }
 
   descargarCSV() {
