@@ -28,30 +28,34 @@ export class DashboardComponent implements OnInit {
   constructor(private clienteService: ClienteDataService) {}
 
   ngOnInit() {
-    this.clienteService.getClientes().subscribe({
-      next: (data) => {
-        this.clientes = data;
-        this.totalPaginas = Math.ceil(this.clientes.length / this.elementosPorPagina);
-        this.cambiarPagina(1); // Mostrar la primera página
-        this.cargando = false;
-      },
-      error: (err) => {
-        this.error = 'Error al cargar clientes';
-        this.cargando = false;
-        console.error(err);
-      }
-    });
+  this.clienteService.getClientes().subscribe({
+    next: (data) => {
+      this.clientes = data;
+      this.totalPaginas = Math.ceil(this.clientes.length / this.elementosPorPagina);
+      this.cambiarPagina(1); // Mostrar la primera página
+      this.cargando = false;
 
-    this.clienteService.getResumenDia().subscribe({
-      next: (res) => {
-        this.cilindrosVendidosHoy = res.cilindrosVendidos;
-        this.personasRegistradasHoy = res.personasRegistradas;
-      },
-      error: (err) => {
-        console.error('Error al cargar resumen del día', err);
-      }
-    });
-  }
+      // 🔹 Calcular cilindros vendidos (sumatoria)
+      this.cilindrosVendidosHoy = this.clientes.reduce(
+        (total, cliente) => total + (cliente.cantidad_cilindros || 0),
+        0
+      );
+
+      // 🔹 Calcular personas registradas hoy (si existe fecha de registro)
+      const hoy = new Date().toISOString().split('T')[0];
+      this.personasRegistradasHoy = this.clientes.filter(cliente => {
+        if (!cliente.fecha_ingreso) return false;
+        return cliente.fecha_ingreso.split('T')[0] === hoy;
+      }).length;
+    },
+    error: (err) => {
+      this.error = 'Error al cargar clientes';
+      this.cargando = false;
+      console.error(err);
+    }
+  });
+}
+
 
   cambiarPagina(pagina: number) {
     if (pagina < 1 || pagina > this.totalPaginas) return;
