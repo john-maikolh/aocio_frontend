@@ -67,21 +67,28 @@ export class DashboardComponent implements OnInit {
   }
 
   descargarCSV() {
-    this.clienteService.downloadCSV().subscribe({
-      next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'clientes.csv';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      },
-      error: (err) => {
-        console.error('Error al descargar CSV:', err);
-        alert('Error al descargar el archivo CSV');
-      }
-    });
+  if (!this.clientes || this.clientes.length === 0) {
+    alert('No hay datos para exportar.');
+    return;
   }
+
+  // Construir el contenido del CSV
+  const encabezados = Object.keys(this.clientes[0]).join(',');
+  const filas = this.clientes.map(cliente =>
+    Object.values(cliente).map(valor => `"${valor ?? ''}"`).join(',')
+  );
+  
+  const csvContent = [encabezados, ...filas].join('\n');
+
+  // Crear y descargar el archivo
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', 'clientes.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 }
