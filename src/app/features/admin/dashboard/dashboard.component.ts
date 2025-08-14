@@ -66,29 +66,40 @@ export class DashboardComponent implements OnInit {
     this.clientesPaginados = this.clientes.slice(inicio, fin);
   }
 
-  descargarCSV() {
-  if (!this.clientes || this.clientes.length === 0) {
-    alert('No hay datos para exportar.');
-    return;
+    descargarCSV() {
+    if (!this.clientes || this.clientes.length === 0) {
+      alert('No hay datos para exportar.');
+      return;
+    }
+
+    // Usar punto y coma como separador
+    const separador = ';';
+
+    // Encabezados
+    const encabezados = Object.keys(this.clientes[0]).join(separador);
+
+    // Filas de datos
+    const filas = this.clientes.map(cliente =>
+      Object.values(cliente)
+        .map(valor => valor !== null && valor !== undefined ? `"${valor}"` : '""')
+        .join(separador)
+    );
+
+    // Unir todo con salto de línea
+    const csvContent = [encabezados, ...filas].join('\n');
+
+    // Agregar BOM para que Excel detecte UTF-8
+    const bom = '\uFEFF';
+    const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+
+    // Descargar
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'clientes.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
-  // Construir el contenido del CSV
-  const encabezados = Object.keys(this.clientes[0]).join(',');
-  const filas = this.clientes.map(cliente =>
-    Object.values(cliente).map(valor => `"${valor ?? ''}"`).join(',')
-  );
-  
-  const csvContent = [encabezados, ...filas].join('\n');
-
-  // Crear y descargar el archivo
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement('a');
-  link.setAttribute('href', url);
-  link.setAttribute('download', 'clientes.csv');
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
 }
